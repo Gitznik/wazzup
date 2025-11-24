@@ -1,0 +1,24 @@
+version: "2"
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+    - golines
+    - swaggo
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/Alpas-AI/template
+linters:
+  enable:
+    - exhaustive
+    - gosec
+  settings:
+    exhaustive:
+      check:
+        - switch
+        - map
+    gosec:
+      excludes:
+        - G115
