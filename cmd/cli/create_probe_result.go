@@ -16,14 +16,7 @@ import (
 // createCmd represents the create command
 func CreateProbeResultCmd() *cobra.Command {
 	cmd := cobra.Command{
-		Use:   "create-probe-result <probe-id> <result>",
-		Short: "A brief description of your command",
-		Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+		Use:  "create-probe-result <probe-id> <result>",
 		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 1*time.Second)
@@ -41,12 +34,7 @@ to quickly create a Cobra application.`,
 				return fmt.Errorf("passed result %d is out of range", r)
 			}
 			s := ServiceFrom(cmd)
-			defer func() {
-				if err := s.Close(); err != nil {
-					fmt.Fprintf(cmd.OutOrStdout(), "Failed closing the db: %v\n", err)
-				}
-			}()
-			p, err := s.CreateProbeResult(ctx, pid, rp)
+			p, err := s.CreateProbeResult(ctx, pid, rp, "")
 			if err != nil {
 				return err
 			}

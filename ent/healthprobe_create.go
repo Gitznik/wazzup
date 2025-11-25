@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -29,6 +30,20 @@ func (_c *HealthProbeCreate) SetName(v string) *HealthProbeCreate {
 // SetURL sets the "url" field.
 func (_c *HealthProbeCreate) SetURL(v string) *HealthProbeCreate {
 	_c.mutation.SetURL(v)
+	return _c
+}
+
+// SetDeactivatedAt sets the "deactivated_at" field.
+func (_c *HealthProbeCreate) SetDeactivatedAt(v time.Time) *HealthProbeCreate {
+	_c.mutation.SetDeactivatedAt(v)
+	return _c
+}
+
+// SetNillableDeactivatedAt sets the "deactivated_at" field if the given value is not nil.
+func (_c *HealthProbeCreate) SetNillableDeactivatedAt(v *time.Time) *HealthProbeCreate {
+	if v != nil {
+		_c.SetDeactivatedAt(*v)
+	}
 	return _c
 }
 
@@ -125,6 +140,10 @@ func (_c *HealthProbeCreate) createSpec() (*HealthProbe, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.URL(); ok {
 		_spec.SetField(healthprobe.FieldURL, field.TypeString, value)
 		_node.URL = value
+	}
+	if value, ok := _c.mutation.DeactivatedAt(); ok {
+		_spec.SetField(healthprobe.FieldDeactivatedAt, field.TypeTime, value)
+		_node.DeactivatedAt = value
 	}
 	if nodes := _c.mutation.HealthProbeResultsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

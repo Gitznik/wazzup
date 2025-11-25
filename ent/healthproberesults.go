@@ -20,6 +20,8 @@ type HealthProbeResults struct {
 	ID int `json:"id,omitempty"`
 	// Result holds the value of the "result" field.
 	Result schema.CheckResult `json:"result,omitempty"`
+	// Context holds the value of the "context" field.
+	Context string `json:"context,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the HealthProbeResultsQuery when eager-loading is set.
 	Edges                             HealthProbeResultsEdges `json:"edges"`
@@ -54,6 +56,8 @@ func (*HealthProbeResults) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case healthproberesults.FieldID, healthproberesults.FieldResult:
 			values[i] = new(sql.NullInt64)
+		case healthproberesults.FieldContext:
+			values[i] = new(sql.NullString)
 		case healthproberesults.ForeignKeys[0]: // health_probe_health_probe_results
 			values[i] = new(sql.NullInt64)
 		default:
@@ -82,6 +86,12 @@ func (_m *HealthProbeResults) assignValues(columns []string, values []any) error
 				return fmt.Errorf("unexpected type %T for field result", values[i])
 			} else if value.Valid {
 				_m.Result = schema.CheckResult(value.Int64)
+			}
+		case healthproberesults.FieldContext:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field context", values[i])
+			} else if value.Valid {
+				_m.Context = value.String
 			}
 		case healthproberesults.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -133,6 +143,9 @@ func (_m *HealthProbeResults) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("result=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Result))
+	builder.WriteString(", ")
+	builder.WriteString("context=")
+	builder.WriteString(_m.Context)
 	builder.WriteByte(')')
 	return builder.String()
 }

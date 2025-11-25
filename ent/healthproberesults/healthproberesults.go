@@ -14,6 +14,8 @@ const (
 	FieldID = "id"
 	// FieldResult holds the string denoting the result field in the database.
 	FieldResult = "result"
+	// FieldContext holds the string denoting the context field in the database.
+	FieldContext = "context"
 	// EdgeHealthProbe holds the string denoting the health_probe edge name in mutations.
 	EdgeHealthProbe = "health_probe"
 	// Table holds the table name of the healthproberesults in the database.
@@ -31,6 +33,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldResult,
+	FieldContext,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "health_probe_results"
@@ -70,6 +73,11 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 // ByResult orders the results by the result field.
 func ByResult(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldResult, opts...).ToFunc()
+}
+
+// ByContext orders the results by the context field.
+func ByContext(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContext, opts...).ToFunc()
 }
 
 // ByHealthProbeField orders the results by health_probe field.

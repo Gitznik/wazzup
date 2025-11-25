@@ -6,7 +6,7 @@ install:
     go get -t ./...
 
 generate:
-    go tool sqlc generate
+    go generate ./ent
 
 setup: generate install
 
@@ -18,3 +18,6 @@ quality:
     golangci-lint fmt
     golangci-lint run
     govulncheck ./...
+
+runcli:
+    go run ./cmd/cli

@@ -11,7 +11,7 @@ import (
 
 func TestCreate(t *testing.T) {
 	// Given a database client and service are available
-	client, _ := testhelpers.DBClient(t)
+	client := testhelpers.DBClient(t)
 	s := service.Service{Ent: client}
 	defer func() { _ = client.Close() }()
 	defer func() { _ = s.Close() }()

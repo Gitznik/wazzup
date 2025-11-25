@@ -5,6 +5,7 @@ go 1.25.2
 require (
 	entgo.io/ent v0.14.5
 	github.com/go-playground/validator/v10 v10.28.0
+	github.com/kardianos/service v1.2.4
 	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.8.4

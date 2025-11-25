@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -20,6 +21,8 @@ type HealthProbe struct {
 	Name string `json:"name,omitempty"`
 	// URL holds the value of the "url" field.
 	URL string `json:"url,omitempty"`
+	// DeactivatedAt holds the value of the "deactivated_at" field.
+	DeactivatedAt time.Time `json:"deactivated_at,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the HealthProbeQuery when eager-loading is set.
 	Edges        HealthProbeEdges `json:"edges"`
@@ -53,6 +56,8 @@ func (*HealthProbe) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case healthprobe.FieldName, healthprobe.FieldURL:
 			values[i] = new(sql.NullString)
+		case healthprobe.FieldDeactivatedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -85,6 +90,12 @@ func (_m *HealthProbe) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field url", values[i])
 			} else if value.Valid {
 				_m.URL = value.String
+			}
+		case healthprobe.FieldDeactivatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deactivated_at", values[i])
+			} else if value.Valid {
+				_m.DeactivatedAt = value.Time
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -132,6 +143,9 @@ func (_m *HealthProbe) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("url=")
 	builder.WriteString(_m.URL)
+	builder.WriteString(", ")
+	builder.WriteString("deactivated_at=")
+	builder.WriteString(_m.DeactivatedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

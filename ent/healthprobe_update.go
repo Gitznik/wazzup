@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -53,6 +54,26 @@ func (_u *HealthProbeUpdate) SetNillableURL(v *string) *HealthProbeUpdate {
 	if v != nil {
 		_u.SetURL(*v)
 	}
+	return _u
+}
+
+// SetDeactivatedAt sets the "deactivated_at" field.
+func (_u *HealthProbeUpdate) SetDeactivatedAt(v time.Time) *HealthProbeUpdate {
+	_u.mutation.SetDeactivatedAt(v)
+	return _u
+}
+
+// SetNillableDeactivatedAt sets the "deactivated_at" field if the given value is not nil.
+func (_u *HealthProbeUpdate) SetNillableDeactivatedAt(v *time.Time) *HealthProbeUpdate {
+	if v != nil {
+		_u.SetDeactivatedAt(*v)
+	}
+	return _u
+}
+
+// ClearDeactivatedAt clears the value of the "deactivated_at" field.
+func (_u *HealthProbeUpdate) ClearDeactivatedAt() *HealthProbeUpdate {
+	_u.mutation.ClearDeactivatedAt()
 	return _u
 }
 
@@ -152,6 +173,12 @@ func (_u *HealthProbeUpdate) sqlSave(ctx context.Context) (_node int, err error)
 	if value, ok := _u.mutation.URL(); ok {
 		_spec.SetField(healthprobe.FieldURL, field.TypeString, value)
 	}
+	if value, ok := _u.mutation.DeactivatedAt(); ok {
+		_spec.SetField(healthprobe.FieldDeactivatedAt, field.TypeTime, value)
+	}
+	if _u.mutation.DeactivatedAtCleared() {
+		_spec.ClearField(healthprobe.FieldDeactivatedAt, field.TypeTime)
+	}
 	if _u.mutation.HealthProbeResultsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -242,6 +269,26 @@ func (_u *HealthProbeUpdateOne) SetNillableURL(v *string) *HealthProbeUpdateOne 
 	if v != nil {
 		_u.SetURL(*v)
 	}
+	return _u
+}
+
+// SetDeactivatedAt sets the "deactivated_at" field.
+func (_u *HealthProbeUpdateOne) SetDeactivatedAt(v time.Time) *HealthProbeUpdateOne {
+	_u.mutation.SetDeactivatedAt(v)
+	return _u
+}
+
+// SetNillableDeactivatedAt sets the "deactivated_at" field if the given value is not nil.
+func (_u *HealthProbeUpdateOne) SetNillableDeactivatedAt(v *time.Time) *HealthProbeUpdateOne {
+	if v != nil {
+		_u.SetDeactivatedAt(*v)
+	}
+	return _u
+}
+
+// ClearDeactivatedAt clears the value of the "deactivated_at" field.
+func (_u *HealthProbeUpdateOne) ClearDeactivatedAt() *HealthProbeUpdateOne {
+	_u.mutation.ClearDeactivatedAt()
 	return _u
 }
 
@@ -370,6 +417,12 @@ func (_u *HealthProbeUpdateOne) sqlSave(ctx context.Context) (_node *HealthProbe
 	}
 	if value, ok := _u.mutation.URL(); ok {
 		_spec.SetField(healthprobe.FieldURL, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.DeactivatedAt(); ok {
+		_spec.SetField(healthprobe.FieldDeactivatedAt, field.TypeTime, value)
+	}
+	if _u.mutation.DeactivatedAtCleared() {
+		_spec.ClearField(healthprobe.FieldDeactivatedAt, field.TypeTime)
 	}
 	if _u.mutation.HealthProbeResultsCleared() {
 		edge := &sqlgraph.EdgeSpec{

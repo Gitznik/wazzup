@@ -50,6 +50,26 @@ func (_u *HealthProbeResultsUpdate) AddResult(v schema.CheckResult) *HealthProbe
 	return _u
 }
 
+// SetContext sets the "context" field.
+func (_u *HealthProbeResultsUpdate) SetContext(v string) *HealthProbeResultsUpdate {
+	_u.mutation.SetContext(v)
+	return _u
+}
+
+// SetNillableContext sets the "context" field if the given value is not nil.
+func (_u *HealthProbeResultsUpdate) SetNillableContext(v *string) *HealthProbeResultsUpdate {
+	if v != nil {
+		_u.SetContext(*v)
+	}
+	return _u
+}
+
+// ClearContext clears the value of the "context" field.
+func (_u *HealthProbeResultsUpdate) ClearContext() *HealthProbeResultsUpdate {
+	_u.mutation.ClearContext()
+	return _u
+}
+
 // SetHealthProbeID sets the "health_probe" edge to the HealthProbe entity by ID.
 func (_u *HealthProbeResultsUpdate) SetHealthProbeID(id int) *HealthProbeResultsUpdate {
 	_u.mutation.SetHealthProbeID(id)
@@ -135,6 +155,12 @@ func (_u *HealthProbeResultsUpdate) sqlSave(ctx context.Context) (_node int, err
 	if value, ok := _u.mutation.AddedResult(); ok {
 		_spec.AddField(healthproberesults.FieldResult, field.TypeInt, value)
 	}
+	if value, ok := _u.mutation.Context(); ok {
+		_spec.SetField(healthproberesults.FieldContext, field.TypeString, value)
+	}
+	if _u.mutation.ContextCleared() {
+		_spec.ClearField(healthproberesults.FieldContext, field.TypeString)
+	}
 	if _u.mutation.HealthProbeCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -202,6 +228,26 @@ func (_u *HealthProbeResultsUpdateOne) SetNillableResult(v *schema.CheckResult) 
 // AddResult adds value to the "result" field.
 func (_u *HealthProbeResultsUpdateOne) AddResult(v schema.CheckResult) *HealthProbeResultsUpdateOne {
 	_u.mutation.AddResult(v)
+	return _u
+}
+
+// SetContext sets the "context" field.
+func (_u *HealthProbeResultsUpdateOne) SetContext(v string) *HealthProbeResultsUpdateOne {
+	_u.mutation.SetContext(v)
+	return _u
+}
+
+// SetNillableContext sets the "context" field if the given value is not nil.
+func (_u *HealthProbeResultsUpdateOne) SetNillableContext(v *string) *HealthProbeResultsUpdateOne {
+	if v != nil {
+		_u.SetContext(*v)
+	}
+	return _u
+}
+
+// ClearContext clears the value of the "context" field.
+func (_u *HealthProbeResultsUpdateOne) ClearContext() *HealthProbeResultsUpdateOne {
+	_u.mutation.ClearContext()
 	return _u
 }
 
@@ -319,6 +365,12 @@ func (_u *HealthProbeResultsUpdateOne) sqlSave(ctx context.Context) (_node *Heal
 	}
 	if value, ok := _u.mutation.AddedResult(); ok {
 		_spec.AddField(healthproberesults.FieldResult, field.TypeInt, value)
+	}
+	if value, ok := _u.mutation.Context(); ok {
+		_spec.SetField(healthproberesults.FieldContext, field.TypeString, value)
+	}
+	if _u.mutation.ContextCleared() {
+		_spec.ClearField(healthproberesults.FieldContext, field.TypeString)
 	}
 	if _u.mutation.HealthProbeCleared() {
 		edge := &sqlgraph.EdgeSpec{

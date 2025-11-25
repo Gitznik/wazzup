@@ -12,6 +12,6 @@ func (s Service) CreateProbe(ctx context.Context, name, url string) (*ent.Health
 	return repository.CreateHealthProbe(ctx, s.Ent, name, url)
 }
 
-func (s Service) CreateProbeResult(ctx context.Context, id int, result schema.CheckResult) (*ent.HealthProbeResults, error) {
-	return repository.CreateHealthProbeResults(ctx, s.Ent, id, result)
+func (s Service) CreateProbeResult(ctx context.Context, id int, result schema.CheckResult, context string) (*ent.HealthProbeResults, error) {
+	return repository.CreateHealthProbeResults(ctx, s.Ent, id, result, context)
 }

@@ -9,6 +9,10 @@ import (
 	"github.com/gitznik/wazzup/ent/schema"
 )
 
+func GetProbes(ctx context.Context, client *ent.Client) (ent.HealthProbes, error) {
+	return client.HealthProbe.Query().All(ctx)
+}
+
 func CreateHealthProbe(ctx context.Context, client *ent.Client, name string, url string) (*ent.HealthProbe, error) {
 	p, err := client.HealthProbe.Create().SetName(name).SetURL(url).Save(ctx)
 	if err != nil {
@@ -41,8 +45,12 @@ func GetHealthProbeResultsForName(ctx context.Context, client *ent.Client, probe
 	return r, err
 }
 
-func CreateHealthProbeResults(ctx context.Context, client *ent.Client, probe int, result schema.CheckResult) (*ent.HealthProbeResults, error) {
-	p, err := client.HealthProbeResults.Create().SetResult(result).SetHealthProbeID(probe).Save(ctx)
+func CreateHealthProbeResults(ctx context.Context, client *ent.Client, probe int, result schema.CheckResult, context string) (*ent.HealthProbeResults, error) {
+	q := client.HealthProbeResults.Create().SetResult(result).SetHealthProbeID(probe)
+	if context != "" {
+		q = q.SetContext(context)
+	}
+	p, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed storing health probe result: %w", err)
 	}

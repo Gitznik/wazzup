@@ -9,9 +9,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func Startup() *ent.Client {
-	dsn := "file:wazzup.db?_fk=1"
-	client, err := ent.Open("sqlite3", dsn)
+func Startup(dbDSN string) *ent.Client {
+	client, err := ent.Open("sqlite3", dbDSN)
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v", err)
 	}

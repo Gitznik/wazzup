@@ -11,6 +11,7 @@ type CheckResult int
 const (
 	Success CheckResult = iota
 	Failure
+	HTTPFailure
 )
 
 func (c CheckResult) IsValid() bool {
@@ -25,7 +26,8 @@ type HealthProbeResults struct {
 // Fields of the HealthProbeResults.
 func (HealthProbeResults) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("result").GoType(CheckResult(0)).Positive(),
+		field.Int("result").GoType(CheckResult(0)).NonNegative(),
+		field.String("context").Optional(),
 	}
 }
 

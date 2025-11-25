@@ -16,6 +16,8 @@ const (
 	FieldName = "name"
 	// FieldURL holds the string denoting the url field in the database.
 	FieldURL = "url"
+	// FieldDeactivatedAt holds the string denoting the deactivated_at field in the database.
+	FieldDeactivatedAt = "deactivated_at"
 	// EdgeHealthProbeResults holds the string denoting the health_probe_results edge name in mutations.
 	EdgeHealthProbeResults = "health_probe_results"
 	// Table holds the table name of the healthprobe in the database.
@@ -34,6 +36,7 @@ var Columns = []string{
 	FieldID,
 	FieldName,
 	FieldURL,
+	FieldDeactivatedAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -67,6 +70,11 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByURL orders the results by the url field.
 func ByURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldURL, opts...).ToFunc()
+}
+
+// ByDeactivatedAt orders the results by the deactivated_at field.
+func ByDeactivatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeactivatedAt, opts...).ToFunc()
 }
 
 // ByHealthProbeResultsCount orders the results by health_probe_results count.

@@ -3,6 +3,8 @@
 package healthprobe
 
 import (
+	"time"
+
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/gitznik/wazzup/ent/predicate"
@@ -61,6 +63,11 @@ func Name(v string) predicate.HealthProbe {
 // URL applies equality check predicate on the "url" field. It's identical to URLEQ.
 func URL(v string) predicate.HealthProbe {
 	return predicate.HealthProbe(sql.FieldEQ(FieldURL, v))
+}
+
+// DeactivatedAt applies equality check predicate on the "deactivated_at" field. It's identical to DeactivatedAtEQ.
+func DeactivatedAt(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldEQ(FieldDeactivatedAt, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -191,6 +198,56 @@ func URLEqualFold(v string) predicate.HealthProbe {
 // URLContainsFold applies the ContainsFold predicate on the "url" field.
 func URLContainsFold(v string) predicate.HealthProbe {
 	return predicate.HealthProbe(sql.FieldContainsFold(FieldURL, v))
+}
+
+// DeactivatedAtEQ applies the EQ predicate on the "deactivated_at" field.
+func DeactivatedAtEQ(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldEQ(FieldDeactivatedAt, v))
+}
+
+// DeactivatedAtNEQ applies the NEQ predicate on the "deactivated_at" field.
+func DeactivatedAtNEQ(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldNEQ(FieldDeactivatedAt, v))
+}
+
+// DeactivatedAtIn applies the In predicate on the "deactivated_at" field.
+func DeactivatedAtIn(vs ...time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldIn(FieldDeactivatedAt, vs...))
+}
+
+// DeactivatedAtNotIn applies the NotIn predicate on the "deactivated_at" field.
+func DeactivatedAtNotIn(vs ...time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldNotIn(FieldDeactivatedAt, vs...))
+}
+
+// DeactivatedAtGT applies the GT predicate on the "deactivated_at" field.
+func DeactivatedAtGT(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldGT(FieldDeactivatedAt, v))
+}
+
+// DeactivatedAtGTE applies the GTE predicate on the "deactivated_at" field.
+func DeactivatedAtGTE(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldGTE(FieldDeactivatedAt, v))
+}
+
+// DeactivatedAtLT applies the LT predicate on the "deactivated_at" field.
+func DeactivatedAtLT(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldLT(FieldDeactivatedAt, v))
+}
+
+// DeactivatedAtLTE applies the LTE predicate on the "deactivated_at" field.
+func DeactivatedAtLTE(v time.Time) predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldLTE(FieldDeactivatedAt, v))
+}
+
+// DeactivatedAtIsNil applies the IsNil predicate on the "deactivated_at" field.
+func DeactivatedAtIsNil() predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldIsNull(FieldDeactivatedAt))
+}
+
+// DeactivatedAtNotNil applies the NotNil predicate on the "deactivated_at" field.
+func DeactivatedAtNotNil() predicate.HealthProbe {
+	return predicate.HealthProbe(sql.FieldNotNull(FieldDeactivatedAt))
 }
 
 // HasHealthProbeResults applies the HasEdge predicate on the "health_probe_results" edge.

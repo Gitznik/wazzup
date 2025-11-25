@@ -27,6 +27,20 @@ func (_c *HealthProbeResultsCreate) SetResult(v schema.CheckResult) *HealthProbe
 	return _c
 }
 
+// SetContext sets the "context" field.
+func (_c *HealthProbeResultsCreate) SetContext(v string) *HealthProbeResultsCreate {
+	_c.mutation.SetContext(v)
+	return _c
+}
+
+// SetNillableContext sets the "context" field if the given value is not nil.
+func (_c *HealthProbeResultsCreate) SetNillableContext(v *string) *HealthProbeResultsCreate {
+	if v != nil {
+		_c.SetContext(*v)
+	}
+	return _c
+}
+
 // SetHealthProbeID sets the "health_probe" edge to the HealthProbe entity by ID.
 func (_c *HealthProbeResultsCreate) SetHealthProbeID(id int) *HealthProbeResultsCreate {
 	_c.mutation.SetHealthProbeID(id)
@@ -117,6 +131,10 @@ func (_c *HealthProbeResultsCreate) createSpec() (*HealthProbeResults, *sqlgraph
 	if value, ok := _c.mutation.Result(); ok {
 		_spec.SetField(healthproberesults.FieldResult, field.TypeInt, value)
 		_node.Result = value
+	}
+	if value, ok := _c.mutation.Context(); ok {
+		_spec.SetField(healthproberesults.FieldContext, field.TypeString, value)
+		_node.Context = value
 	}
 	if nodes := _c.mutation.HealthProbeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

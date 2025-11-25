@@ -43,9 +43,14 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
+	var s *service.Service
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
-		s := service.New()
+		s = service.New()
 		WithService(cmd, s)
 	}
+	rootCmd.PersistentPostRunE = func(cmd *cobra.Command, args []string) error {
+		return s.Close()
+	}
+
 }

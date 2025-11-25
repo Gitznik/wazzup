@@ -13,6 +13,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "url", Type: field.TypeString},
+		{Name: "deactivated_at", Type: field.TypeTime, Nullable: true},
 	}
 	// HealthProbesTable holds the schema information for the "health_probes" table.
 	HealthProbesTable = &schema.Table{
@@ -24,6 +25,7 @@ var (
 	HealthProbeResultsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "result", Type: field.TypeInt},
+		{Name: "context", Type: field.TypeString, Nullable: true},
 		{Name: "health_probe_health_probe_results", Type: field.TypeInt, Nullable: true},
 	}
 	// HealthProbeResultsTable holds the schema information for the "health_probe_results" table.
@@ -34,7 +36,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "health_probe_results_health_probes_health_probe_results",
-				Columns:    []*schema.Column{HealthProbeResultsColumns[2]},
+				Columns:    []*schema.Column{HealthProbeResultsColumns[3]},
 				RefColumns: []*schema.Column{HealthProbesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

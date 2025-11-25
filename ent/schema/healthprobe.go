@@ -20,6 +20,7 @@ func (HealthProbe) Fields() []ent.Field {
 		field.String("url").Validate(func(s string) error {
 			return validate.Var(s, "required,url")
 		}),
+		field.Time("deactivated_at").Optional(),
 	}
 }
 

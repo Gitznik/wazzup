@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -39,6 +40,7 @@ type HealthProbeMutation struct {
 	id                          *int
 	name                        *string
 	url                         *string
+	deactivated_at              *time.Time
 	clearedFields               map[string]struct{}
 	health_probe_results        map[int]struct{}
 	removedhealth_probe_results map[int]struct{}
@@ -218,6 +220,55 @@ func (m *HealthProbeMutation) ResetURL() {
 	m.url = nil
 }
 
+// SetDeactivatedAt sets the "deactivated_at" field.
+func (m *HealthProbeMutation) SetDeactivatedAt(t time.Time) {
+	m.deactivated_at = &t
+}
+
+// DeactivatedAt returns the value of the "deactivated_at" field in the mutation.
+func (m *HealthProbeMutation) DeactivatedAt() (r time.Time, exists bool) {
+	v := m.deactivated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeactivatedAt returns the old "deactivated_at" field's value of the HealthProbe entity.
+// If the HealthProbe object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *HealthProbeMutation) OldDeactivatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeactivatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeactivatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeactivatedAt: %w", err)
+	}
+	return oldValue.DeactivatedAt, nil
+}
+
+// ClearDeactivatedAt clears the value of the "deactivated_at" field.
+func (m *HealthProbeMutation) ClearDeactivatedAt() {
+	m.deactivated_at = nil
+	m.clearedFields[healthprobe.FieldDeactivatedAt] = struct{}{}
+}
+
+// DeactivatedAtCleared returns if the "deactivated_at" field was cleared in this mutation.
+func (m *HealthProbeMutation) DeactivatedAtCleared() bool {
+	_, ok := m.clearedFields[healthprobe.FieldDeactivatedAt]
+	return ok
+}
+
+// ResetDeactivatedAt resets all changes to the "deactivated_at" field.
+func (m *HealthProbeMutation) ResetDeactivatedAt() {
+	m.deactivated_at = nil
+	delete(m.clearedFields, healthprobe.FieldDeactivatedAt)
+}
+
 // AddHealthProbeResultIDs adds the "health_probe_results" edge to the HealthProbeResults entity by ids.
 func (m *HealthProbeMutation) AddHealthProbeResultIDs(ids ...int) {
 	if m.health_probe_results == nil {
@@ -306,12 +357,15 @@ func (m *HealthProbeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *HealthProbeMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 3)
 	if m.name != nil {
 		fields = append(fields, healthprobe.FieldName)
 	}
 	if m.url != nil {
 		fields = append(fields, healthprobe.FieldURL)
+	}
+	if m.deactivated_at != nil {
+		fields = append(fields, healthprobe.FieldDeactivatedAt)
 	}
 	return fields
 }
@@ -325,6 +379,8 @@ func (m *HealthProbeMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case healthprobe.FieldURL:
 		return m.URL()
+	case healthprobe.FieldDeactivatedAt:
+		return m.DeactivatedAt()
 	}
 	return nil, false
 }
@@ -338,6 +394,8 @@ func (m *HealthProbeMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldName(ctx)
 	case healthprobe.FieldURL:
 		return m.OldURL(ctx)
+	case healthprobe.FieldDeactivatedAt:
+		return m.OldDeactivatedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown HealthProbe field %s", name)
 }
@@ -360,6 +418,13 @@ func (m *HealthProbeMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetURL(v)
+		return nil
+	case healthprobe.FieldDeactivatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeactivatedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown HealthProbe field %s", name)
@@ -390,7 +455,11 @@ func (m *HealthProbeMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *HealthProbeMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(healthprobe.FieldDeactivatedAt) {
+		fields = append(fields, healthprobe.FieldDeactivatedAt)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -403,6 +472,11 @@ func (m *HealthProbeMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *HealthProbeMutation) ClearField(name string) error {
+	switch name {
+	case healthprobe.FieldDeactivatedAt:
+		m.ClearDeactivatedAt()
+		return nil
+	}
 	return fmt.Errorf("unknown HealthProbe nullable field %s", name)
 }
 
@@ -415,6 +489,9 @@ func (m *HealthProbeMutation) ResetField(name string) error {
 		return nil
 	case healthprobe.FieldURL:
 		m.ResetURL()
+		return nil
+	case healthprobe.FieldDeactivatedAt:
+		m.ResetDeactivatedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown HealthProbe field %s", name)
@@ -512,6 +589,7 @@ type HealthProbeResultsMutation struct {
 	id                  *int
 	result              *schema.CheckResult
 	addresult           *schema.CheckResult
+	context             *string
 	clearedFields       map[string]struct{}
 	health_probe        *int
 	clearedhealth_probe bool
@@ -674,6 +752,55 @@ func (m *HealthProbeResultsMutation) ResetResult() {
 	m.addresult = nil
 }
 
+// SetContext sets the "context" field.
+func (m *HealthProbeResultsMutation) SetContext(s string) {
+	m.context = &s
+}
+
+// Context returns the value of the "context" field in the mutation.
+func (m *HealthProbeResultsMutation) Context() (r string, exists bool) {
+	v := m.context
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContext returns the old "context" field's value of the HealthProbeResults entity.
+// If the HealthProbeResults object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *HealthProbeResultsMutation) OldContext(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContext is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContext requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContext: %w", err)
+	}
+	return oldValue.Context, nil
+}
+
+// ClearContext clears the value of the "context" field.
+func (m *HealthProbeResultsMutation) ClearContext() {
+	m.context = nil
+	m.clearedFields[healthproberesults.FieldContext] = struct{}{}
+}
+
+// ContextCleared returns if the "context" field was cleared in this mutation.
+func (m *HealthProbeResultsMutation) ContextCleared() bool {
+	_, ok := m.clearedFields[healthproberesults.FieldContext]
+	return ok
+}
+
+// ResetContext resets all changes to the "context" field.
+func (m *HealthProbeResultsMutation) ResetContext() {
+	m.context = nil
+	delete(m.clearedFields, healthproberesults.FieldContext)
+}
+
 // SetHealthProbeID sets the "health_probe" edge to the HealthProbe entity by id.
 func (m *HealthProbeResultsMutation) SetHealthProbeID(id int) {
 	m.health_probe = &id
@@ -747,9 +874,12 @@ func (m *HealthProbeResultsMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *HealthProbeResultsMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 2)
 	if m.result != nil {
 		fields = append(fields, healthproberesults.FieldResult)
+	}
+	if m.context != nil {
+		fields = append(fields, healthproberesults.FieldContext)
 	}
 	return fields
 }
@@ -761,6 +891,8 @@ func (m *HealthProbeResultsMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case healthproberesults.FieldResult:
 		return m.Result()
+	case healthproberesults.FieldContext:
+		return m.Context()
 	}
 	return nil, false
 }
@@ -772,6 +904,8 @@ func (m *HealthProbeResultsMutation) OldField(ctx context.Context, name string) 
 	switch name {
 	case healthproberesults.FieldResult:
 		return m.OldResult(ctx)
+	case healthproberesults.FieldContext:
+		return m.OldContext(ctx)
 	}
 	return nil, fmt.Errorf("unknown HealthProbeResults field %s", name)
 }
@@ -787,6 +921,13 @@ func (m *HealthProbeResultsMutation) SetField(name string, value ent.Value) erro
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetResult(v)
+		return nil
+	case healthproberesults.FieldContext:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContext(v)
 		return nil
 	}
 	return fmt.Errorf("unknown HealthProbeResults field %s", name)
@@ -832,7 +973,11 @@ func (m *HealthProbeResultsMutation) AddField(name string, value ent.Value) erro
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *HealthProbeResultsMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(healthproberesults.FieldContext) {
+		fields = append(fields, healthproberesults.FieldContext)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -845,6 +990,11 @@ func (m *HealthProbeResultsMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *HealthProbeResultsMutation) ClearField(name string) error {
+	switch name {
+	case healthproberesults.FieldContext:
+		m.ClearContext()
+		return nil
+	}
 	return fmt.Errorf("unknown HealthProbeResults nullable field %s", name)
 }
 
@@ -854,6 +1004,9 @@ func (m *HealthProbeResultsMutation) ResetField(name string) error {
 	switch name {
 	case healthproberesults.FieldResult:
 		m.ResetResult()
+		return nil
+	case healthproberesults.FieldContext:
+		m.ResetContext()
 		return nil
 	}
 	return fmt.Errorf("unknown HealthProbeResults field %s", name)

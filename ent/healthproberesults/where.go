@@ -60,6 +60,11 @@ func Result(v schema.CheckResult) predicate.HealthProbeResults {
 	return predicate.HealthProbeResults(sql.FieldEQ(FieldResult, vc))
 }
 
+// Context applies equality check predicate on the "context" field. It's identical to ContextEQ.
+func Context(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldEQ(FieldContext, v))
+}
+
 // ResultEQ applies the EQ predicate on the "result" field.
 func ResultEQ(v schema.CheckResult) predicate.HealthProbeResults {
 	vc := int(v)
@@ -112,6 +117,81 @@ func ResultLT(v schema.CheckResult) predicate.HealthProbeResults {
 func ResultLTE(v schema.CheckResult) predicate.HealthProbeResults {
 	vc := int(v)
 	return predicate.HealthProbeResults(sql.FieldLTE(FieldResult, vc))
+}
+
+// ContextEQ applies the EQ predicate on the "context" field.
+func ContextEQ(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldEQ(FieldContext, v))
+}
+
+// ContextNEQ applies the NEQ predicate on the "context" field.
+func ContextNEQ(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldNEQ(FieldContext, v))
+}
+
+// ContextIn applies the In predicate on the "context" field.
+func ContextIn(vs ...string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldIn(FieldContext, vs...))
+}
+
+// ContextNotIn applies the NotIn predicate on the "context" field.
+func ContextNotIn(vs ...string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldNotIn(FieldContext, vs...))
+}
+
+// ContextGT applies the GT predicate on the "context" field.
+func ContextGT(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldGT(FieldContext, v))
+}
+
+// ContextGTE applies the GTE predicate on the "context" field.
+func ContextGTE(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldGTE(FieldContext, v))
+}
+
+// ContextLT applies the LT predicate on the "context" field.
+func ContextLT(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldLT(FieldContext, v))
+}
+
+// ContextLTE applies the LTE predicate on the "context" field.
+func ContextLTE(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldLTE(FieldContext, v))
+}
+
+// ContextContains applies the Contains predicate on the "context" field.
+func ContextContains(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldContains(FieldContext, v))
+}
+
+// ContextHasPrefix applies the HasPrefix predicate on the "context" field.
+func ContextHasPrefix(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldHasPrefix(FieldContext, v))
+}
+
+// ContextHasSuffix applies the HasSuffix predicate on the "context" field.
+func ContextHasSuffix(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldHasSuffix(FieldContext, v))
+}
+
+// ContextIsNil applies the IsNil predicate on the "context" field.
+func ContextIsNil() predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldIsNull(FieldContext))
+}
+
+// ContextNotNil applies the NotNil predicate on the "context" field.
+func ContextNotNil() predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldNotNull(FieldContext))
+}
+
+// ContextEqualFold applies the EqualFold predicate on the "context" field.
+func ContextEqualFold(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldEqualFold(FieldContext, v))
+}
+
+// ContextContainsFold applies the ContainsFold predicate on the "context" field.
+func ContextContainsFold(v string) predicate.HealthProbeResults {
+	return predicate.HealthProbeResults(sql.FieldContainsFold(FieldContext, v))
 }
 
 // HasHealthProbe applies the HasEdge predicate on the "health_probe" edge.

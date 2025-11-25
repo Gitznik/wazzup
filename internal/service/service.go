@@ -9,8 +9,17 @@ type Service struct {
 	Ent *ent.Client
 }
 
+const DefaultDSN = "file:wazzup.db?_fk=1"
+
 func New() *Service {
-	client := db.Startup()
+	client := db.Startup(DefaultDSN)
+	return &Service{
+		Ent: client,
+	}
+}
+
+func NewFromDSN(dbDSN string) *Service {
+	client := db.Startup(dbDSN)
 	return &Service{
 		Ent: client,
 	}
